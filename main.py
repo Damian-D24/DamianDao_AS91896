@@ -19,8 +19,9 @@ canvas1.create_image(0, 0, image=bg, anchor="nw")
 
 # Adding buttons
 button1=Button(root, text="Let's Start")
+button2=Button(root, text="Exit", borderwidth=0, highlightthickness=0)
 
-# Display Buttons
+# Display "Let's Start" Button
 button1_canvas=canvas1.create_window(
     100,
     10,
@@ -28,8 +29,19 @@ button1_canvas=canvas1.create_window(
     window=button1
 )
 
-button1.place(x=464.3, y=57)
+button1.place(x=510, y=560, anchor="sw")
 
-button1.config(width=16, height=2)
+button1.config(width=32, height=4)
+
+# Display "Exit" Button
+button2_canvas=canvas1.create_window(
+    100,
+    10,
+    anchor="nw",
+    window=button2
+)
+
+button2.place(x=1147, y=75, anchor="sw")
+button2.config(width=15, height=3)
 
 root.mainloop()
