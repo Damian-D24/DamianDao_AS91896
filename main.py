@@ -7,6 +7,12 @@ import random
 
 app = ctk.CTk()
 
+# Global Variables
+names = []
+asked = []
+score = 0
+qnum = 0
+
 # Loading Fonts
 font_path = Path(__file__).parent / 'fonts/BalsamiqSans-Regular.ttf'
 pyglet.options['win32_gdi_font'] = True
@@ -17,7 +23,12 @@ exit_font=ctk.CTkFont(family=balsamiqsans, size=25)
 
 # Adjust size of windows
 app.geometry("1280x720")
-# Adding an image file
+
+#
+# SCREEN 1
+#
+
+# Adding an image file for the background
 bg = PhotoImage(file="images/homepage.png")
 # Create canvas
 canvas1=Canvas(app, width=1280, height=720)
