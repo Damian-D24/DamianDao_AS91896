@@ -57,7 +57,7 @@ pyglet.font.add_file(str(font_path))
 balsamiqsans = "Balsamiq Sans"
 main_font=ctk.CTkFont(family=balsamiqsans, size=50, weight="bold")
 exit_font=ctk.CTkFont(family=balsamiqsans, size=25)
-main_exit_font=ctk.CTkFont(family=balsamiqsans, size=28)
+main_exit_font=ctk.CTkFont(family=balsamiqsans, size=27)
 
 # Adjust size of windows
 root.geometry("1280x720")
@@ -122,12 +122,12 @@ class Quiz:
                                    width=322, height=100, corner_radius=50)
         self.button2=ctk.CTkButton(self.frame, text="Exit",
                                    bg_color="#e46a4a", fg_color="white", font=main_exit_font, text_color="black",
-                                   width=94, height=14, corner_radius=10, command=close_window)
+                                   width=94, height=14, corner_radius=7, command=close_window)
         # Display "Let's Start" Button
         self.button1.place(x=479, y=582, anchor="sw")
 
         # Display "Exit" Button
-        self.button2.place(x=1080, y=154, anchor="sw")
+        self.button2.place(x=1080, y=153, anchor="sw")
 
 quiz_instance = QuizStart(root)
 root.mainloop()
