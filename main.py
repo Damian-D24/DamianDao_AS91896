@@ -61,7 +61,7 @@ entry_font_title=ctk.CTkFont(family=balsamiqsans, size=18)
 entry_font=ctk.CTkFont(family=balsamiqsans, size=14)
 exit_font=ctk.CTkFont(family=balsamiqsans, size=25)
 
-answer_font=ctk.CTkFont(family=balsamiqsans, size=30, weight="bold")
+answer_font=ctk.CTkFont(family=balsamiqsans, size=28, weight="bold")
 main_exit_font=ctk.CTkFont(family=balsamiqsans, size=27)
 questionnumber_font=ctk.CTkFont(family=balsamiqsans, size=40, weight="bold")
 
@@ -161,31 +161,31 @@ class Quiz:
         # Adding Answer Option Buttons
         Radiobutton(self.frame,
                     text=questions_answers[qnum][1],
-                    variable=self.var, value=1,
+                    variable=self.var, value=1, width=11, height=1,
                     font=answer_font,
-                    justify="left",
-                    anchor="w").place(x=120, y=250)
+                    justify="left", bg="#62c370",
+                    anchor="w").place(x=109, y=257)
 
         Radiobutton(self.frame,
                     text=questions_answers[qnum][2],
-                    variable=self.var, value=2,
+                    variable=self.var, value=2, width=11, height=1,
                     font=answer_font,
                     justify="left",
-                    anchor="w").place(x=980, y=250)
+                    anchor="w").place(x=956, y=257)
 
         Radiobutton(self.frame,
                     text=questions_answers[qnum][3],
-                    variable=self.var, value=3,
+                    variable=self.var, value=3, width=11, height=1,
                     font=answer_font,
                     justify="left",
-                    anchor="w").place(x=120, y=470)
+                    anchor="w").place(x=109, y=470)
 
         Radiobutton(self.frame,
                     text=questions_answers[qnum][4],
-                    variable=self.var, value=4,
+                    variable=self.var, value=4, width=11, height=1,
                     font=answer_font,
                     justify="left",
-                    anchor="w").place(x=980, y=470)
+                    anchor="w").place(x=956, y=470)
 
 
 quiz_instance = QuizStart(root)
