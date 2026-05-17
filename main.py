@@ -29,7 +29,7 @@ questions_answers = {
     "Pukeko", 1, "images/birds/pukeko.jpg"],
 4: ["What kind of bird is this?",
     "Kererū", "Kea", "Kākāpō", "Kiwi",
-    "Kea", 2, "images/birds/kea.jpg"],
+    "Kea", 2, "images/birds/kea.png"],
 5: ["What kind of bird is this?",
     "Takahē", "Whio", "Tūī", "Miromiro",
     "Tūī", 3, "images/birds/tui.png"],
@@ -44,7 +44,7 @@ questions_answers = {
     "Takahē", 2, "images/birds/takahe.jpg"],
 9: ["What kind of bird is this?",
     "Ruru", "Kōkako", "Penguin", "Kākāpō",
-    "Kākāpō", 4, "images/birds/kakapo.jpg"],
+    "Kākāpō", 4, "images/birds/kakapo.png"],
 10: ["What kind of bird is this?",
     "Kiwi", "Albatross", "Kakī", "Miromiro",
     "Kiwi", 1, "images/birds/kiwi.jpg"],
@@ -137,7 +137,7 @@ class Quiz:
         self.frame.pack(fill="both", expand=True)
         # Display the background
         # Adding background images
-        bg = PIL.Image.open("images/question.png")
+        bg = PIL.Image.open(questions_answers[qnum][7])
         bg_image=ctk.CTkImage(light_image=bg,dark_image=bg, size=(1280, 720))
         self.bg_label = ctk.CTkLabel(self.frame, image=bg_image, text="")
         self.bg_label.place(x=0, y=0, relwidth=1, relheight=1)
@@ -155,40 +155,35 @@ class Quiz:
         #Setting up Randomiser to Randomise Questions
         randomiser()
         self.var = IntVar(value=0)
+
         # Adding Answer Option Buttons
-        Radiobutton(self.frame,
+        self.option1=ctk.CTkRadioButton(self.frame,
                     text=questions_answers[qnum][1],
                     variable=self.var, value=1, width=11, height=1,
-                    font=answer_font, relief="sunken",
-                    justify="left", bg="#62c370", fg="white", activebackground="#f2c409", selectcolor="black",
-                    anchor="w").place(x=109, y=257)
+                    font=answer_font,
+                    fg_color="#62c370", text_color="white", bg_color="#62c370", #command = lambda: selected_answer()
+                    ).place(x=109, y=257)
 
-        Radiobutton(self.frame,
+        self.option2=ctk.CTkRadioButton(self.frame,
                     text=questions_answers[qnum][2],
                     variable=self.var, value=2, width=11, height=1,
-                    font=answer_font, relief="sunken",
-                    justify="left", bg="#62c370", fg="white", activebackground="#f2c409", selectcolor="black",
-                    anchor="w").place(x=956, y=257)
+                    font=answer_font,
+                    fg_color="#62c370", text_color="white"
+                    ).place(x=956, y=257)
 
-        Radiobutton(self.frame,
+        self.option3=ctk.CTkRadioButton(self.frame,
                     text=questions_answers[qnum][3],
                     variable=self.var, value=3, width=11, height=1,
-                    font=answer_font, relief="sunken",
-                    justify="left", bg="#62c370", fg="white", activebackground="#f2c409", selectcolor="black",
-                    anchor="w").place(x=109, y=470)
+                    font=answer_font,
+                    fg_color="#62c370", text_color="white"
+                    ).place(x=109, y=470)
 
-        Radiobutton(self.frame,
+        self.option4=ctk.CTkRadioButton(self.frame,
                     text=questions_answers[qnum][4],
                     variable=self.var, value=4, width=11, height=1,
-                    font=answer_font, relief="sunken",
-                    justify="left", bg="#62c370", fg="white", activebackground="#f2c409", selectcolor="black",
-                    anchor="w").place(x=956, y=470)
-        # Adding image of bird
-        bird = PIL.Image.open(questions_answers[qnum][8])
-        bg_image = ctk.CTkImage(light_image=bg, dark_image=bg, size=(1280, 720))
-        self.bg_label = ctk.CTkLabel(self.frame, image=bg_image, text="")
-        self.bg_label.place(x=0, y=0, relwidth=1, relheight=1)
-
+                    font=answer_font,
+                    fg_color="#62c370", text_color="white"
+                    ).place(x=956, y=470)
 
 quiz_instance = QuizStart(root)
 root.mainloop()
