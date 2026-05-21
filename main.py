@@ -159,32 +159,32 @@ class Quiz:
         # Adding Answer Option Buttons
         self.option1 = ctk.CTkRadioButton(self.frame,
                     text=questions_answers[qnum][1],
-                    variable=self.var, value=1, width=11, height=1,
-                    font=answer_font,
+                    variable=self.var, value=1, width=180, height=1,
+                    font=answer_font, hover_color="white",
                     fg_color="#62c370", text_color="white", bg_color="#62c370",
                     command=self.highlight_selected)
         self.option1.place(x=109, y=257)
 
         self.option2 = ctk.CTkRadioButton(self.frame,
                     text=questions_answers[qnum][2],
-                    variable=self.var, value=2, width=11, height=1,
-                    font=answer_font,
+                    variable=self.var, value=2, width=180, height=1,
+                    font=answer_font, hover_color="white",
                     fg_color="#62c370", text_color="white", bg_color="#62c370",
                     command=self.highlight_selected)
         self.option2.place(x=956, y=257)
 
         self.option3 = ctk.CTkRadioButton(self.frame,
                     text=questions_answers[qnum][3],
-                    variable=self.var, value=3, width=11, height=1,
-                    font=answer_font,
+                    variable=self.var, value=3, width=180, height=1,
+                    font=answer_font, hover_color="white",
                     fg_color="#62c370", text_color="white", bg_color="#62c370",
                     command=self.highlight_selected)
         self.option3.place(x=109, y=470)
 
         self.option4 = ctk.CTkRadioButton(self.frame,
                     text=questions_answers[qnum][4],
-                    variable=self.var, value=4, width=11, height=1,
-                    font=answer_font,
+                    variable=self.var, value=4, width=180, height=1,
+                    font=answer_font, hover_color="white",
                     fg_color="#62c370", text_color="white", bg_color="#62c370",
                     command=self.highlight_selected)
         self.option4.place(x=956, y=470)
