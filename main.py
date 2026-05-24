@@ -12,8 +12,12 @@ root = ctk.CTk()
 # Global Variables
 names = []
 asked = []
+question_order = []
+selections = {}
+current_index = 0
 score = 0
 qnum = 0
+TOTAL_QUESTIONS = 10
 
 # Questions
 # id: [question, option1, option2, option3, option4, correct_text, correct_option_number, image]
@@ -57,9 +61,9 @@ pyglet.font.add_file(str(font_path))
 balsamiqsans = "Balsamiq Sans"
 
 main_font=ctk.CTkFont(family=balsamiqsans, size=50, weight="bold")
+exit_font=ctk.CTkFont(family=balsamiqsans, size=25)
 entry_font_title=ctk.CTkFont(family=balsamiqsans, size=18)
 entry_font=ctk.CTkFont(family=balsamiqsans, size=14)
-exit_font=ctk.CTkFont(family=balsamiqsans, size=25)
 
 answer_font=ctk.CTkFont(family=balsamiqsans, size=28, weight="bold")
 main_exit_font=ctk.CTkFont(family=balsamiqsans, size=27)
@@ -132,8 +136,13 @@ class QuizStart:
 class Quiz:
     def __init__(self, parent):
         self.parent = parent
-        # Pick a question before using qnum
-        randomiser()
+        global qnum
+        # Pick a new question only if navigating forward into unseen territory
+        if current_index >= len(question_order):
+            randomiser()
+            question_order.append(qnum)
+        else:
+            qnum = question_order[current_index]
         # Create Frame
         self.frame=Frame(parent, width=1280, height=720)
         self.frame.pack(fill="both", expand=True)
@@ -144,7 +153,7 @@ class Quiz:
         self.bg_label = ctk.CTkLabel(self.frame, image=bg_image, text="")
         self.bg_label.place(x=0, y=0, relwidth=1, relheight=1)
         #Adding Question Count
-        self.questioncounter = ctk.CTkLabel(self.frame, text=f"{len(asked)}/10", font=questionnumber_font, fg_color="#62c370",
+        self.questioncounter = ctk.CTkLabel(self.frame, text=f"{current_index + 1}/{TOTAL_QUESTIONS}", font=questionnumber_font, fg_color="#62c370",
                                             text_color="white")
         self.questioncounter.place(x=119, y=110)
         # Adding Exit Button
@@ -154,7 +163,8 @@ class Quiz:
         # Display "Exit" Button
         self.button2.place(x=1080, y=153, anchor="sw")
 
-        self.var = IntVar(value=0)
+        self.var = IntVar(value=selections.get(qnum, 0))
+        self.var.trace_add("write", lambda *_: self.update_submit_state())
 
         # Adding Answer Option Buttons
         self.option1 = ctk.CTkRadioButton(self.frame,
@@ -189,26 +199,71 @@ class Quiz:
                     command=self.highlight_selected)
         self.option4.place(x=956, y=470)
 
+        is_last = current_index >= TOTAL_QUESTIONS - 1
+
+        # Previous Button
+        self.prev_button = ctk.CTkButton(self.frame, text="Previous",
+                                         bg_color="white", fg_color="#62c370", font=main_font, text_color="white",
+                                         width=220, height=70, corner_radius=35,
+                                         command=self.go_previous)
+        self.prev_button.place(x=260, y=640, anchor="center")
+
+        # Next (Skip) Button
+        self.next_button = ctk.CTkButton(self.frame, text="Next",
+                                         bg_color="white", fg_color="#62c370", font=main_font, text_color="white",
+                                         width=220, height=70, corner_radius=35,
+                                         command=self.go_next)
+        self.next_button.place(x=1020, y=640, anchor="center")
+
         # Submit Button
         self.submit_button = ctk.CTkButton(self.frame, text="Submit",
                                            bg_color="white", fg_color="#62c370", font=main_font, text_color="white",
-                                           width=250, height=80, corner_radius=40,
+                                           width=220, height=70, corner_radius=35,
                                            command=self.submit_answer)
         self.submit_button.place(x=640, y=640, anchor="center")
 
+        if current_index == 0:
+            self.prev_button.configure(state="disabled")
+        if is_last:
+            self.next_button.configure(state="disabled")
+        self.update_submit_state()
+        # Re-apply highlight if user had previously selected
+        if self.var.get() != 0:
+            self.highlight_selected()
+
+    def update_submit_state(self):
+        if self.var.get() == 0:
+            self.submit_button.configure(state="disabled")
+        else:
+            self.submit_button.configure(state="normal")
+
+    def go_previous(self):
+        global current_index
+        selections[qnum] = self.var.get()
+        if current_index > 0:
+            current_index -= 1
+            self.frame.destroy()
+            Quiz(self.parent)
+
+    def go_next(self):
+        global current_index
+        selections[qnum] = self.var.get()
+        if current_index < TOTAL_QUESTIONS - 1:
+            current_index += 1
+            self.frame.destroy()
+            Quiz(self.parent)
 
     def submit_answer(self):
-        selected = self.var.get()
-        if selected == 0:
-            messagebox.showerror("Error", "Please select an answer.")
+        global current_index, score
+        if self.var.get() == 0:
             return
-        global score
-        if selected == questions_answers[qnum][6]:
-            score += 1
-        if len(asked) >= 10:
-            messagebox.showinfo("Quiz Complete", f"{names[-1]}, you scored {score}/10!")
+        selections[qnum] = self.var.get()
+        if current_index >= TOTAL_QUESTIONS - 1:
+            score = sum(1 for q, ans in selections.items() if ans == questions_answers[q][6])
+            messagebox.showinfo("Quiz Complete", f"{names[-1]}, you scored {score}/{TOTAL_QUESTIONS}!")
             close_window()
         else:
+            current_index += 1
             self.frame.destroy()
             Quiz(self.parent)
 
