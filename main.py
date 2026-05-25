@@ -123,7 +123,9 @@ class QuizStart:
     # Function to Start the Quiz
     def start_quiz(self):
         name = self.entryname.get().strip()
-        if name:
+        if name.isdigit():
+            messagebox.showerror("Error", "You cannot have numbers in your name.")
+        elif name:
             names.append(name)
             self.frame.destroy()
             Quiz(self.parent)
