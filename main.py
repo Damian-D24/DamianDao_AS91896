@@ -294,7 +294,7 @@ class AnswerScreen:
         # Question counter
         self.questioncounter = ctk.CTkLabel(self.frame, text=f"{current_index + 1}/{TOTAL_QUESTIONS}", font=questionnumber_font, fg_color="#62c370",
                                             text_color="white")
-        self.questioncounter.place(x=119, y=110)
+        self.questioncounter.place(x=120, y=120)
 
         # Exit button
         self.exit_button = ctk.CTkButton(self.frame, text="Exit",
