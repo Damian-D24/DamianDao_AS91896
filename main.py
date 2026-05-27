@@ -67,7 +67,10 @@ entry_font=ctk.CTkFont(family=balsamiqsans, size=14)
 
 answer_font=ctk.CTkFont(family=balsamiqsans, size=28, weight="bold")
 main_exit_font=ctk.CTkFont(family=balsamiqsans, size=27)
-questionnumber_font=ctk.CTkFont(family=balsamiqsans, size=40, weight="bold")
+secondary_font=ctk.CTkFont(family=balsamiqsans, size=21)
+questionnumber_font=ctk.CTkFont(family=balsamiqsans, size=32, weight="bold")
+
+result_font=ctk.CTkFont(family=balsamiqsans, size=60, weight="bold")
 
 # Adjust size of windows
 root.geometry("1280x720")
@@ -157,7 +160,7 @@ class Quiz:
         #Adding Question Count
         self.questioncounter = ctk.CTkLabel(self.frame, text=f"{current_index + 1}/{TOTAL_QUESTIONS}", font=questionnumber_font, fg_color="#62c370",
                                             text_color="white")
-        self.questioncounter.place(x=119, y=110)
+        self.questioncounter.place(x=120, y=120)
         # Adding Exit Button
         self.button2=ctk.CTkButton(self.frame, text="Exit",
                                    bg_color="#e46a4a", fg_color="white", font=main_exit_font, text_color="black",
@@ -205,24 +208,24 @@ class Quiz:
 
         # Previous Button
         self.prev_button = ctk.CTkButton(self.frame, text="Previous",
-                                         bg_color="white", fg_color="#62c370", font=main_font, text_color="white",
-                                         width=220, height=70, corner_radius=35,
+                                         bg_color="white", fg_color="white", font=secondary_font, text_color="black",
+                                         width=94, height=14, corner_radius=7,
                                          command=self.go_previous)
-        self.prev_button.place(x=260, y=640, anchor="center")
+        self.prev_button.place(x=449, y=598, anchor="center")
 
         # Next (Skip) Button
         self.next_button = ctk.CTkButton(self.frame, text="Next",
-                                         bg_color="white", fg_color="#62c370", font=main_font, text_color="white",
-                                         width=220, height=70, corner_radius=35,
+                                         bg_color="white", fg_color="white", font=secondary_font, text_color="black",
+                                         width=94, height=14, corner_radius=7,
                                          command=self.go_next)
-        self.next_button.place(x=1020, y=640, anchor="center")
+        self.next_button.place(x=836, y=598, anchor="center")
 
         # Submit Button
         self.submit_button = ctk.CTkButton(self.frame, text="Submit",
-                                           bg_color="white", fg_color="#62c370", font=main_font, text_color="white",
-                                           width=220, height=70, corner_radius=35,
+                                           bg_color="white", fg_color="white", font=secondary_font, text_color="black",
+                                           width=94, height=14, corner_radius=7,
                                            command=self.submit_answer)
-        self.submit_button.place(x=640, y=640, anchor="center")
+        self.submit_button.place(x=643, y=598, anchor="center")
 
         if current_index == 0:
             self.prev_button.configure(state="disabled")
@@ -256,18 +259,12 @@ class Quiz:
             Quiz(self.parent)
 
     def submit_answer(self):
-        global current_index, score
         if self.var.get() == 0:
             return
         selections[qnum] = self.var.get()
-        if current_index >= TOTAL_QUESTIONS - 1:
-            score = sum(1 for q, ans in selections.items() if ans == questions_answers[q][6])
-            messagebox.showinfo("Quiz Complete", f"{names[-1]}, you scored {score}/{TOTAL_QUESTIONS}!")
-            close_window()
-        else:
-            current_index += 1
-            self.frame.destroy()
-            Quiz(self.parent)
+        is_correct = self.var.get() == questions_answers[qnum][6]
+        self.frame.destroy()
+        AnswerScreen(self.parent, qnum, is_correct)
 
     def highlight_selected(self):
         options = [self.option1, self.option2, self.option3, self.option4]
@@ -277,6 +274,58 @@ class Quiz:
                 opt.configure(fg_color="#E2E037", bg_color="#E2E037", text_color="black")
             else:
                 opt.configure(fg_color="#62c370", bg_color="#62c370", text_color="white")
+
+#
+# SCREEN 3 - Correct/Incorrect Feedback
+#
+class AnswerScreen:
+    def __init__(self, parent, question_num, is_correct):
+        self.parent = parent
+        self.frame = Frame(parent, width=1280, height=720)
+        self.frame.pack(fill="both", expand=True)
+
+        # Background derived from the question's bird image
+        bird_name = Path(questions_answers[question_num][7]).stem
+        bg = PIL.Image.open(f"images/answers/{bird_name}_answer.png")
+        bg_image = ctk.CTkImage(light_image=bg, dark_image=bg, size=(1280, 720))
+        self.bg_label = ctk.CTkLabel(self.frame, image=bg_image, text="")
+        self.bg_label.place(x=0, y=0, relwidth=1, relheight=1)
+
+        # Question counter
+        self.questioncounter = ctk.CTkLabel(self.frame, text=f"{current_index + 1}/{TOTAL_QUESTIONS}", font=questionnumber_font, fg_color="#62c370",
+                                            text_color="white")
+        self.questioncounter.place(x=119, y=110)
+
+        # Exit button
+        self.exit_button = ctk.CTkButton(self.frame, text="Exit",
+                                         bg_color="#e46a4a", fg_color="white", font=main_exit_font, text_color="black",
+                                         width=94, height=14, corner_radius=7, command=close_window)
+        self.exit_button.place(x=1080, y=153, anchor="sw")
+
+        # Correct / Incorrect text — 200px padding from top, centered horizontally
+        text = "Correct!" if is_correct else "Incorrect"
+        colour = "#62c370" if is_correct else "#e46a4a"
+        self.result_label = ctk.CTkLabel(self.frame, text=text, font=result_font,
+                                         text_color=colour, fg_color="transparent")
+        self.result_label.place(x=640, y=75, anchor="n")
+
+        # Continue button
+        self.continue_button = ctk.CTkButton(self.frame, text="Continue",
+                                             bg_color="white", fg_color="#62c370", font=main_font, text_color="white",
+                                             width=300, height=80, corner_radius=40,
+                                             command=self.go_on)
+        self.continue_button.place(x=640, y=640, anchor="center")
+
+    def go_on(self):
+        global current_index, score
+        if current_index >= TOTAL_QUESTIONS - 1:
+            score = sum(1 for q, ans in selections.items() if ans == questions_answers[q][6])
+            messagebox.showinfo("Quiz Complete", f"{names[-1]}, you scored {score}/{TOTAL_QUESTIONS}!")
+            close_window()
+        else:
+            current_index += 1
+            self.frame.destroy()
+            Quiz(self.parent)
 
 quiz_instance = QuizStart(root)
 root.mainloop()
