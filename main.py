@@ -10,14 +10,14 @@ import random
 root = ctk.CTk()
 
 # Global Variables
-names = []
-asked = []
-question_order = []
-selections = {}
-current_index = 0
+names = [] #Stores the User's name
+asked = [] #Questions that have been asked already
+question_order = [] #Stores the order of questions that have been asked
+selections = {} #Stores the answers the user have selected, without this, the code cannot remember
+current_index = 0 #
 score = 0
-qnum = 0
-TOTAL_QUESTIONS = 10
+qnum = 0 #
+TOTAL_QUESTIONS = 10 #Total number of questions, allows me to edit code easily
 
 # Questions
 # id: [question, option1, option2, option3, option4, correct_text, correct_option_number, image]
@@ -93,7 +93,7 @@ def randomiser():
         randomiser()
 
 #
-# SCREEN 1
+# SCREEN 1 - Start-Up Page
 #
 class QuizStart:
     def __init__(self, parent):
@@ -136,7 +136,7 @@ class QuizStart:
             messagebox.showerror("Error", "Please enter your name.")
 
 #
-# SCREEN 2
+# SCREEN 2 - Main Quiz Page
 #
 class Quiz:
     def __init__(self, parent):
@@ -276,7 +276,7 @@ class Quiz:
                 opt.configure(fg_color="#62c370", bg_color="#62c370", text_color="white")
 
 #
-# SCREEN 3 - Correct/Incorrect Feedback
+# SCREEN 3 - Answer Feedback Page (Correct/Incorrect)
 #
 class AnswerScreen:
     def __init__(self, parent, question_num, is_correct):
