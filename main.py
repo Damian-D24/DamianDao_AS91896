@@ -241,6 +241,7 @@ class Quiz:
             self.submit_button.configure(state="disabled")
         else:
             self.submit_button.configure(state="normal")
+            self.next_button.configure(state="disabled")
 
     def go_previous(self):
         global current_index
@@ -327,5 +328,6 @@ class AnswerScreen:
             self.frame.destroy()
             Quiz(self.parent)
 
+root.title("New Zealand Native Bird Quiz")
 quiz_instance = QuizStart(root)
 root.mainloop()
