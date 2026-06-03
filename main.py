@@ -17,7 +17,7 @@ selections = {} #Stores the answers the user have selected, without this, the co
 current_index = 0 #
 score = 0
 qnum = 0 #
-TOTAL_QUESTIONS = 10 #Total number of questions, allows me to edit code easily
+total_questions = 10 #Total number of questions, allows me to edit code easily
 
 # Questions
 # id: [question, option1, option2, option3, option4, correct_text, correct_option_number, image]
@@ -158,7 +158,7 @@ class Quiz:
         self.bg_label = ctk.CTkLabel(self.frame, image=bg_image, text="")
         self.bg_label.place(x=0, y=0, relwidth=1, relheight=1)
         #Adding Question Count
-        self.questioncounter = ctk.CTkLabel(self.frame, text=f"{current_index + 1}/{TOTAL_QUESTIONS}", font=questionnumber_font, fg_color="#62c370",
+        self.questioncounter = ctk.CTkLabel(self.frame, text=f"{current_index + 1}/{total_questions}", font=questionnumber_font, fg_color="#62c370",
                                             text_color="white")
         self.questioncounter.place(x=120, y=120)
         # Adding Exit Button
@@ -204,7 +204,7 @@ class Quiz:
                     command=self.highlight_selected)
         self.option4.place(x=956, y=470)
 
-        is_last = current_index >= TOTAL_QUESTIONS - 1
+        is_last = current_index >= total_questions - 1
 
         # Previous Button
         self.prev_button = ctk.CTkButton(self.frame, text="Previous",
@@ -254,7 +254,7 @@ class Quiz:
     def go_next(self):
         global current_index
         selections[qnum] = self.var.get()
-        if current_index < TOTAL_QUESTIONS - 1:
+        if current_index < total_questions - 1:
             current_index += 1
             self.frame.destroy()
             Quiz(self.parent)
@@ -293,7 +293,7 @@ class AnswerScreen:
         self.bg_label.place(x=0, y=0, relwidth=1, relheight=1)
 
         # Question counter
-        self.questioncounter = ctk.CTkLabel(self.frame, text=f"{current_index + 1}/{TOTAL_QUESTIONS}", font=questionnumber_font, fg_color="#62c370",
+        self.questioncounter = ctk.CTkLabel(self.frame, text=f"{current_index + 1}/{total_questions}", font=questionnumber_font, fg_color="#62c370",
                                             text_color="white")
         self.questioncounter.place(x=120, y=120)
 
@@ -319,9 +319,9 @@ class AnswerScreen:
 
     def go_on(self):
         global current_index, score
-        if current_index >= TOTAL_QUESTIONS - 1:
+        if current_index >= total_questions - 1:
             score = sum(1 for q, ans in selections.items() if ans == questions_answers[q][6])
-            messagebox.showinfo("Quiz Complete", f"{names[-1]}, you scored {score}/{TOTAL_QUESTIONS}!")
+            messagebox.showinfo("Quiz Complete", f"{names[-1]}, you scored {score}/{total_questions}!")
             close_window()
         else:
             current_index += 1
