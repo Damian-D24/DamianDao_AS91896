@@ -307,15 +307,15 @@ class AnswerScreen:
         text = "Correct!" if is_correct else "Incorrect"
         colour = "#62c370" if is_correct else "#e46a4a"
         self.result_label = ctk.CTkLabel(self.frame, text=text, font=result_font,
-                                         text_color=colour, fg_color="transparent")
+                                         text_color=colour, fg_color="white")
         self.result_label.place(x=640, y=75, anchor="n")
 
         # Continue button
         self.continue_button = ctk.CTkButton(self.frame, text="Continue",
-                                             bg_color="white", fg_color="#62c370", font=main_font, text_color="white",
-                                             width=300, height=80, corner_radius=40,
+                                             bg_color="white", fg_color="white", font=secondary_font, text_color="black",
+                                             width=94, height=14, corner_radius=7,
                                              command=self.go_on)
-        self.continue_button.place(x=640, y=640, anchor="center")
+        self.continue_button.place(x=643, y=598, anchor="center")
 
     def go_on(self):
         global current_index, score
