@@ -67,7 +67,7 @@ entry_font=ctk.CTkFont(family=balsamiqsans, size=14)
 
 answer_font=ctk.CTkFont(family=balsamiqsans, size=28, weight="bold")
 main_exit_font=ctk.CTkFont(family=balsamiqsans, size=27)
-secondary_font=ctk.CTkFont(family=balsamiqsans, size=21)
+secondary_font=ctk.CTkFont(family=balsamiqsans, size=20)
 questionnumber_font=ctk.CTkFont(family=balsamiqsans, size=32, weight="bold")
 
 result_font=ctk.CTkFont(family=balsamiqsans, size=60, weight="bold")
@@ -208,8 +208,8 @@ class Quiz:
 
         # Previous Button
         self.prev_button = ctk.CTkButton(self.frame, text="Previous",
-                                         bg_color="white", fg_color="white", font=secondary_font, text_color="black",
-                                         width=94, height=14, corner_radius=7,
+                                         bg_color="#ff924d", fg_color="white", font=secondary_font, text_color="black",
+                                         width=98, height=46, corner_radius=8,
                                          command=self.go_previous)
         self.prev_button.place(x=449, y=598, anchor="center")
 
@@ -313,7 +313,7 @@ class AnswerScreen:
         # Continue button
         self.continue_button = ctk.CTkButton(self.frame, text="Continue",
                                              bg_color="white", fg_color="white", font=secondary_font, text_color="black",
-                                             width=94, height=14, corner_radius=7,
+                                             width=94, height=16, corner_radius=8,
                                              command=self.go_on)
         self.continue_button.place(x=643, y=598, anchor="center")
 
