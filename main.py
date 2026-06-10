@@ -209,9 +209,9 @@ class Quiz:
         # Previous Button
         self.prev_button = ctk.CTkButton(self.frame, text="Previous",
                                          bg_color="#ff924d", fg_color="white", font=secondary_font, text_color="black",
-                                         width=98, height=46, corner_radius=8,
+                                         width=100, height=46, corner_radius=8,
                                          command=self.go_previous)
-        self.prev_button.place(x=449, y=598, anchor="center")
+        self.prev_button.place(x=448, y=598, anchor="center")
 
         # Next (Skip) Button
         self.next_button = ctk.CTkButton(self.frame, text="Next",
