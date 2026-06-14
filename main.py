@@ -133,7 +133,7 @@ class QuizStart:
             self.frame.destroy()
             Quiz(self.parent)
         else:
-            messagebox.showerror("Error", "Please enter your name.")
+            messagebox.showerror("Error", "Your name cannot be blank. Please enter your name.")
 
 #
 # SCREEN 2 - Main Quiz Page
