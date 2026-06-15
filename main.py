@@ -55,25 +55,27 @@ questions_answers = {
 }
 
 # Loading Fonts
-font_path = Path(__file__).parent / 'fonts/BalsamiqSans-Regular.ttf'
-pyglet.options['win32_gdi_font'] = True
-pyglet.font.add_file(str(font_path))
-balsamiqsans = "Balsamiq Sans"
+font_path = Path(__file__).parent / 'fonts/BalsamiqSans-Regular.ttf' # Specifies which font I will use
+pyglet.options['win32_gdi_font'] = True # Registers font with Windows Operating System and improves compatibility
+pyglet.font.add_file(str(font_path)) # Adds font file into Tkinter using the variable set above
+balsamiqsans = "Balsamiq Sans" # Registers family name of the font as a variable
 
-main_font=ctk.CTkFont(family=balsamiqsans, size=50, weight="bold")
-exit_font=ctk.CTkFont(family=balsamiqsans, size=25)
-entry_font_title=ctk.CTkFont(family=balsamiqsans, size=18)
-entry_font=ctk.CTkFont(family=balsamiqsans, size=14)
+#Fonts for Start-Up Page
+main_font=ctk.CTkFont(family=balsamiqsans, size=50, weight="bold") # Let's Start button
+exit_font=ctk.CTkFont(family=balsamiqsans, size=25) # Exit button in Start-Up page
+entry_font_title=ctk.CTkFont(family=balsamiqsans, size=18) # "Please enter your name!" above the entry
+entry_font=ctk.CTkFont(family=balsamiqsans, size=14) # Inputted text for the user's name in the entry
 
-answer_font=ctk.CTkFont(family=balsamiqsans, size=28, weight="bold")
-main_exit_font=ctk.CTkFont(family=balsamiqsans, size=27)
-secondary_font=ctk.CTkFont(family=balsamiqsans, size=20)
-questionnumber_font=ctk.CTkFont(family=balsamiqsans, size=32, weight="bold")
+#Fonts for Quiz, Answer Feedback, and Result Page
+answer_font=ctk.CTkFont(family=balsamiqsans, size=28, weight="bold") # Multiple choice radiobuttons for bird options
+main_exit_font=ctk.CTkFont(family=balsamiqsans, size=27) # Exit button in Quiz, Answer Feedback, and Result page
+secondary_font=ctk.CTkFont(family=balsamiqsans, size=20) # Previous, Submit, Next, and Continue Buttons
+questionnumber_font=ctk.CTkFont(family=balsamiqsans, size=32, weight="bold") # Question counter
 
-result_font=ctk.CTkFont(family=balsamiqsans, size=60, weight="bold")
+result_font=ctk.CTkFont(family=balsamiqsans, size=60, weight="bold") # Correct!/Incorrect in Answer Feedback page, and text in the Result page.
 
 # Adjust size of windows
-root.geometry("1280x720")
+root.geometry("1280x720") # Specifies that the window size will be 1280 x 720
 
 #
 # DEFINED FUNCTIONS
@@ -81,7 +83,7 @@ root.geometry("1280x720")
 
 # Close Window
 def close_window():
-    root.destroy()
+    root.destroy() # Closes the program
 
 def randomiser():
     # Selects a random question that hasn't been asked yet
@@ -102,22 +104,22 @@ class QuizStart:
         self.frame=Frame(parent, width=1280, height=720)
         self.frame.pack(fill="both", expand=True)
         # Display the background
-        bg = PIL.Image.open("images/homepage.png")
+        bg = PIL.Image.open("images/homepage.png") # Allows CustomTkinter to recognise the background I have uploaded to use the CtkImage function
         bg_image=ctk.CTkImage(light_image=bg,dark_image=bg, size=(1280, 720))
         self.bg_label = ctk.CTkLabel(self.frame, image=bg_image, text="")
         self.bg_label.place(x=0, y=0, relwidth=1, relheight=1)
         # Name Input Entry
-        self.entrylabel = ctk.CTkLabel(self.frame, font=entry_font_title, text="Please enter your name!", fg_color="white")
+        self.entrylabel = ctk.CTkLabel(self.frame, font=entry_font_title, text="Please enter your name!", fg_color="white") # Entry label for users to input their name
         self.entrylabel.place(x=550, y=403)
         self.entryname = Entry(self.frame, font=entry_font, relief="solid")
         self.entryname.place(x=570, y=443)
         # Adding Start and Exit Button
         self.button1=ctk.CTkButton(self.frame, text="Let's Start",
                                    bg_color="white", fg_color="#62c370", font=main_font, text_color="white",
-                                   width=322, height=100, corner_radius=50, command=self.start_quiz)
+                                   width=322, height=100, corner_radius=50, command=self.start_quiz) # Let's Start button that starts the quiz
         self.button2=ctk.CTkButton(self.frame, text="Exit",
                                    bg_color="#e46a4a", fg_color="white", font=exit_font, text_color="black",
-                                   width=100, height=18, corner_radius=8, command=close_window)
+                                   width=100, height=18, corner_radius=8, command=close_window) # Closes the quiz
         # Display "Let's Start" Button
         self.button1.place(x=479, y=582, anchor="sw")
 
@@ -153,7 +155,7 @@ class Quiz:
         self.frame.pack(fill="both", expand=True)
         # Display the background
         # Adding background images
-        bg = PIL.Image.open(questions_answers[qnum][7])
+        bg = PIL.Image.open(questions_answers[qnum][7]) # Allows CustomTkinter to recognise the background I have uploaded to use the CtkImage function
         bg_image=ctk.CTkImage(light_image=bg,dark_image=bg, size=(1280, 720))
         self.bg_label = ctk.CTkLabel(self.frame, image=bg_image, text="")
         self.bg_label.place(x=0, y=0, relwidth=1, relheight=1)
@@ -164,7 +166,7 @@ class Quiz:
         # Adding Exit Button
         self.button2=ctk.CTkButton(self.frame, text="Exit",
                                    bg_color="#e46a4a", fg_color="white", font=main_exit_font, text_color="black",
-                                   width=94, height=14, corner_radius=7, command=close_window)
+                                   width=94, height=14, corner_radius=7, command=close_window) # Closes the quiz
         # Display "Exit" Button
         self.button2.place(x=1080, y=153, anchor="sw")
 
@@ -287,7 +289,7 @@ class AnswerScreen:
 
         # Background derived from the question's bird image
         bird_name = Path(questions_answers[question_num][7]).stem
-        bg = PIL.Image.open(f"images/answers/{bird_name}_answer.png")
+        bg = PIL.Image.open(f"images/answers/{bird_name}_answer.png") # Allows CustomTkinter to recognise the background I have uploaded to use the CtkImage function
         bg_image = ctk.CTkImage(light_image=bg, dark_image=bg, size=(1280, 720))
         self.bg_label = ctk.CTkLabel(self.frame, image=bg_image, text="")
         self.bg_label.place(x=0, y=0, relwidth=1, relheight=1)
@@ -300,7 +302,7 @@ class AnswerScreen:
         # Exit button
         self.exit_button = ctk.CTkButton(self.frame, text="Exit",
                                          bg_color="#e46a4a", fg_color="white", font=main_exit_font, text_color="black",
-                                         width=94, height=14, corner_radius=7, command=close_window)
+                                         width=94, height=14, corner_radius=7, command=close_window) # Closes the quiz
         self.exit_button.place(x=1080, y=153, anchor="sw")
 
         # Correct / Incorrect text — 200px padding from top, centered horizontally
