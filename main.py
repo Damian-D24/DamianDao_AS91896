@@ -119,22 +119,21 @@ class QuizStart:
                                    width=322, height=100, corner_radius=50, command=self.start_quiz) # Let's Start button that starts the quiz
         self.button2=ctk.CTkButton(self.frame, text="Exit",
                                    bg_color="#e46a4a", fg_color="white", font=exit_font, text_color="black",
-                                   width=100, height=18, corner_radius=8, command=close_window) # Closes the quiz
+                                   width=100, height=18, corner_radius=8, command=close_window) # Exit button that closes the quiz
         # Display "Let's Start" Button
         self.button1.place(x=479, y=582, anchor="sw")
-
         # Display "Exit" Button
         self.button2.place(x=1152, y=72, anchor="sw")
     # Function to Start the Quiz
     def start_quiz(self):
         name = self.entryname.get().strip()
-        if name.isdigit():
+        if name.isdigit(): # Checks if the name is only just numbers, then makes user retry
             messagebox.showerror("Error", "You cannot have numbers in your name.")
-        elif name:
+        elif name: # If there is a name, lets user proceed through quiz
             names.append(name)
             self.frame.destroy()
             Quiz(self.parent)
-        else:
+        else: # If the name is blank, then makes user retry
             messagebox.showerror("Error", "Your name cannot be blank. Please enter your name.")
 
 #
@@ -144,7 +143,7 @@ class Quiz:
     def __init__(self, parent):
         self.parent = parent
         global qnum
-        # Pick a new question only if navigating forward into unseen territory
+        # Pick a new question only if navigating forward into unseen questions
         if current_index >= len(question_order):
             randomiser()
             question_order.append(qnum)
@@ -161,12 +160,12 @@ class Quiz:
         self.bg_label.place(x=0, y=0, relwidth=1, relheight=1)
         #Adding Question Count
         self.questioncounter = ctk.CTkLabel(self.frame, text=f"{current_index + 1}/{total_questions}", font=questionnumber_font, fg_color="#62c370",
-                                            text_color="white")
+                                            text_color="white") # Gives the user the position of the quiz they are at
         self.questioncounter.place(x=120, y=120)
         # Adding Exit Button
         self.button2=ctk.CTkButton(self.frame, text="Exit",
                                    bg_color="#e46a4a", fg_color="white", font=main_exit_font, text_color="black",
-                                   width=94, height=14, corner_radius=7, command=close_window) # Closes the quiz
+                                   width=94, height=14, corner_radius=7, command=close_window) # Exit button that closes the quiz
         # Display "Exit" Button
         self.button2.place(x=1080, y=153, anchor="sw")
 
@@ -180,7 +179,7 @@ class Quiz:
                     font=answer_font, hover_color="white",
                     fg_color="#62c370", text_color="white", bg_color="#62c370",
                     command=self.highlight_selected)
-        self.option1.place(x=109, y=257)
+        self.option1.place(x=109, y=257) # Answer Option 1
 
         self.option2 = ctk.CTkRadioButton(self.frame,
                     text=questions_answers[qnum][2],
@@ -188,7 +187,7 @@ class Quiz:
                     font=answer_font, hover_color="white",
                     fg_color="#62c370", text_color="white", bg_color="#62c370",
                     command=self.highlight_selected)
-        self.option2.place(x=956, y=257)
+        self.option2.place(x=956, y=257) # Answer Option 2
 
         self.option3 = ctk.CTkRadioButton(self.frame,
                     text=questions_answers[qnum][3],
@@ -196,7 +195,7 @@ class Quiz:
                     font=answer_font, hover_color="white",
                     fg_color="#62c370", text_color="white", bg_color="#62c370",
                     command=self.highlight_selected)
-        self.option3.place(x=109, y=470)
+        self.option3.place(x=109, y=470) # Answer Option 3
 
         self.option4 = ctk.CTkRadioButton(self.frame,
                     text=questions_answers[qnum][4],
@@ -204,9 +203,9 @@ class Quiz:
                     font=answer_font, hover_color="white",
                     fg_color="#62c370", text_color="white", bg_color="#62c370",
                     command=self.highlight_selected)
-        self.option4.place(x=956, y=470)
+        self.option4.place(x=956, y=470) # Answer Option 4
 
-        is_last = current_index >= total_questions - 1
+        is_last = current_index >= total_questions - 1 # Defines a variable that checks whether the current question is the last question
 
         # Previous Button
         self.prev_button = ctk.CTkButton(self.frame, text="Previous",
@@ -229,22 +228,23 @@ class Quiz:
                                            command=self.submit_answer)
         self.submit_button.place(x=643, y=598, anchor="center")
 
-        if current_index == 0:
+        if current_index == 0: # Disables the previous button if it is the first question
             self.prev_button.configure(state="disabled")
-        if is_last:
+        if is_last: # Disables the last button if it is the last question
             self.next_button.configure(state="disabled")
         self.update_submit_state()
-        # Re-apply highlight if user had previously selected
+        # Re-apply highlight if user had previously selected an answer
         if self.var.get() != 0:
             self.highlight_selected()
 
     def update_submit_state(self):
         if self.var.get() == 0:
-            self.submit_button.configure(state="disabled")
+            self.submit_button.configure(state="disabled") # When the user hasn't selected an answer, disables the submit button
         else:
-            self.submit_button.configure(state="normal")
-            self.next_button.configure(state="disabled")
+            self.submit_button.configure(state="normal") # Enables the submit button if an answer is selected
+            self.next_button.configure(state="disabled") # Disables the next button if an answer is selected
 
+    # Function to return to the previous question
     def go_previous(self):
         global current_index
         selections[qnum] = self.var.get()
@@ -253,6 +253,7 @@ class Quiz:
             self.frame.destroy()
             Quiz(self.parent)
 
+    # Function to skip to the next question
     def go_next(self):
         global current_index
         selections[qnum] = self.var.get()
@@ -261,6 +262,7 @@ class Quiz:
             self.frame.destroy()
             Quiz(self.parent)
 
+    # Function to submit an answer, checking whether it is correct or incorrect, then makes user proceed to answer feedback page
     def submit_answer(self):
         if self.var.get() == 0:
             return
@@ -269,7 +271,7 @@ class Quiz:
         self.frame.destroy()
         AnswerScreen(self.parent, qnum, is_correct)
 
-    def highlight_selected(self):
+    def highlight_selected(self): # Function that highlights what the user has selected as an answer
         options = [self.option1, self.option2, self.option3, self.option4]
         selected = self.var.get()
         for i, opt in enumerate(options, start=1):
@@ -302,10 +304,10 @@ class AnswerScreen:
         # Exit button
         self.exit_button = ctk.CTkButton(self.frame, text="Exit",
                                          bg_color="#e46a4a", fg_color="white", font=main_exit_font, text_color="black",
-                                         width=94, height=14, corner_radius=7, command=close_window) # Closes the quiz
+                                         width=94, height=14, corner_radius=7, command=close_window) # Exit button that closes the quiz
         self.exit_button.place(x=1080, y=153, anchor="sw")
 
-        # Correct / Incorrect text — 200px padding from top, centered horizontally
+        # Correct / Incorrect text with 200px padding from top, centered horizontally
         text = "Correct!" if is_correct else "Incorrect"
         colour = "#62c370" if is_correct else "#e46a4a"
         self.result_label = ctk.CTkLabel(self.frame, text=text, font=result_font,
@@ -319,6 +321,7 @@ class AnswerScreen:
                                              command=self.go_on)
         self.continue_button.place(x=643, y=598, anchor="center")
 
+    # Goes to the next question, if this is the last question, gives user a final score
     def go_on(self):
         global current_index, score
         if current_index >= total_questions - 1:
@@ -332,4 +335,5 @@ class AnswerScreen:
 
 root.title("New Zealand Native Bird Quiz")
 quiz_instance = QuizStart(root)
+root.resizable(0, 0)
 root.mainloop()
