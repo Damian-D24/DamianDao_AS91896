@@ -215,7 +215,7 @@ class Quiz:
         self.prev_button.place(x=448, y=598, anchor="center")
 
         # Next (Skip) Button
-        self.next_button = ctk.CTkButton(self.frame, text="Next",
+        self.next_button = ctk.CTkButton(self.frame, text="Skip",
                                          bg_color="white", fg_color="white", font=secondary_font, text_color="black",
                                          width=94, height=14, corner_radius=7,
                                          command=self.go_next)
@@ -326,12 +326,54 @@ class AnswerScreen:
         global current_index, score
         if current_index >= total_questions - 1:
             score = sum(1 for q, ans in selections.items() if ans == questions_answers[q][6])
-            messagebox.showinfo("Quiz Complete", f"{names[-1]}, you scored {score}/{total_questions}!")
-            close_window()
+            self.frame.destroy()
+            ResultScreen(self.parent, score)
         else:
             current_index += 1
             self.frame.destroy()
             Quiz(self.parent)
+
+#
+# SCREEN 4 - Final Result Page
+#
+class ResultScreen:
+    def __init__(self, parent, final_score):
+        self.parent = parent
+        self.frame = Frame(parent, width=1280, height=720)
+        self.frame.pack(fill="both", expand=True)
+
+        # Display the background
+        bg = PIL.Image.open("images/ending.png") # Allows CustomTkinter to recognise the background I have uploaded to use the CtkImage function
+        bg_image = ctk.CTkImage(light_image=bg, dark_image=bg, size=(1280, 720))
+        self.bg_label = ctk.CTkLabel(self.frame, image=bg_image, text="")
+        self.bg_label.place(x=0, y=0, relwidth=1, relheight=1)
+
+        # Exit button (sits in the orange rounded box at the top-right of the background)
+        self.exit_button = ctk.CTkButton(self.frame, text="Exit",
+                                         bg_color="white", fg_color="white", font=main_exit_font, text_color="black",
+                                         width=94, height=14, corner_radius=7, command=close_window) # Exit button that closes the quiz
+        self.exit_button.place(x=1127, y=127, anchor="center")
+
+        # score message and colour, from worst to best: red, yellow, light blue, green
+        if final_score <= 2:
+            message = "Nice try!"
+            colour = "#e46a4a" # red
+        elif final_score <= 5:
+            message = "Great job!"
+            colour = "#E2E037" # yellow
+        elif final_score <= 8:
+            message = "Amazing work!"
+            colour = "#7ec8e3" # light blue
+        else:
+            message = "Excellent!"
+            colour = "#62c370" # green
+
+        # Final score text, centered in the white panel
+        self.result_label = ctk.CTkLabel(self.frame,
+                                         text=f"Your score is\n{final_score}/{total_questions}\n{message}",
+                                         font=result_font, text_color=colour, fg_color="white",
+                                         justify="center")
+        self.result_label.place(x=640, y=360, anchor="center")
 
 root.title("New Zealand Native Bird Quiz")
 quiz_instance = QuizStart(root)
