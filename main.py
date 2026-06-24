@@ -350,27 +350,27 @@ class ResultScreen:
 
         # Exit button (sits in the orange rounded box at the top-right of the background)
         self.exit_button = ctk.CTkButton(self.frame, text="Exit",
-                                         bg_color="white", fg_color="white", font=main_exit_font, text_color="black",
+                                         bg_color="#ef6a4a", fg_color="white", font=main_exit_font, text_color="black",
                                          width=94, height=14, corner_radius=7, command=close_window) # Exit button that closes the quiz
         self.exit_button.place(x=1127, y=127, anchor="center")
 
         # score message and colour, from worst to best: red, yellow, light blue, green
         if final_score <= 2:
-            message = "Nice try!"
-            colour = "#e46a4a" # red
+            message = "Nice try"
+            colour = "#ef6a4a" # red
         elif final_score <= 5:
-            message = "Great job!"
-            colour = "#E2E037" # yellow
+            message = "Great job"
+            colour = "#f2c409" # yellow
         elif final_score <= 8:
-            message = "Amazing work!"
-            colour = "#7ec8e3" # light blue
+            message = "Amazing work"
+            colour = "#9ad1d4" # light blue
         else:
-            message = "Excellent!"
+            message = "Excellent"
             colour = "#62c370" # green
 
         # Final score text, centered in the white panel
         self.result_label = ctk.CTkLabel(self.frame,
-                                         text=f"Your score is\n{final_score}/{total_questions}\n{message}",
+                                         text=f"Your score is\n{final_score}/{total_questions}\n{message}, {names[0]}!",
                                          font=result_font, text_color=colour, fg_color="white",
                                          justify="center")
         self.result_label.place(x=640, y=360, anchor="center")
