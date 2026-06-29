@@ -11,12 +11,12 @@ root = ctk.CTk()
 
 # Global Variables
 names = [] #Stores the User's name
-asked = [] #Questions that have been asked already
-question_order = [] #Stores the order of questions that have been asked
-selections = {} #Stores the answers the user have selected, without this, the code cannot remember
-current_index = 0 #
+asked = [] # Questions that have been asked already
+question_order = [] # Stores the order of questions that have been asked
+selections = {} # Stores the answers the user have selected, without this, the code cannot remember
+current_index = 0 # The current position of the user in the quiz
 score = 0
-qnum = 0 #
+qnum = 0 # Stores the certain question the user is on
 total_questions = 10 #Total number of questions, allows me to edit code easily
 
 # Questions
@@ -159,8 +159,8 @@ class Quiz:
         self.bg_label = ctk.CTkLabel(self.frame, image=bg_image, text="")
         self.bg_label.place(x=0, y=0, relwidth=1, relheight=1)
         #Adding Question Count
-        self.questioncounter = ctk.CTkLabel(self.frame, text=f"{current_index + 1}/{total_questions}", font=questionnumber_font, fg_color="#62c370",
-                                            text_color="white") # Gives the user the position of the quiz they are at
+        self.questioncounter = ctk.CTkLabel(self.frame, font=questionnumber_font, fg_color="#62c370", text_color="white",
+                                            text=f"{current_index + 1}/{total_questions}") # Gives the user the position of the quiz they are at
         self.questioncounter.place(x=120, y=120)
         # Adding Exit Button
         self.button2=ctk.CTkButton(self.frame, text="Exit",
@@ -354,19 +354,19 @@ class ResultScreen:
                                          width=94, height=14, corner_radius=7, command=close_window) # Exit button that closes the quiz
         self.exit_button.place(x=1127, y=127, anchor="center")
 
-        # score message and colour, from worst to best: red, yellow, light blue, green
+        # Score message and colour, from worst to best: red, yellow, light blue, green
         if final_score <= 2:
             message = "Nice try"
-            colour = "#ef6a4a" # red
+            colour = "#ef6a4a" # Red
         elif final_score <= 5:
             message = "Great job"
-            colour = "#f2c409" # yellow
+            colour = "#f2c409" # Yellow
         elif final_score <= 8:
             message = "Amazing work"
-            colour = "#9ad1d4" # light blue
+            colour = "#9ad1d4" # Light blue
         else:
             message = "Excellent"
-            colour = "#62c370" # green
+            colour = "#62c370" # Green
 
         # Final score text, centered in the white panel
         self.result_label = ctk.CTkLabel(self.frame,
