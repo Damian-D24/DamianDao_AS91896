@@ -124,11 +124,15 @@ class QuizStart:
         self.button1.place(x=479, y=582, anchor="sw")
         # Display "Exit" Button
         self.button2.place(x=1152, y=72, anchor="sw")
+        # Allows user to press Enter to submit their name
+        root.bind('<Return>', self.start_quiz)
     # Function to Start the Quiz
-    def start_quiz(self):
+    def start_quiz(self, event=0):
         name = self.entryname.get().strip()
         if name.isdigit(): # Checks if the name is only just numbers, then makes user retry
-            messagebox.showerror("Error", "You cannot have numbers in your name.")
+            messagebox.showerror("Error", "You cannot have just numbers in your name.")
+        elif not name.isalpha():
+            messagebox.showerror("Error", "You cannot have numbers or special characters in your name.")
         elif name: # If there is a name, lets user proceed through quiz
             names.append(name)
             self.frame.destroy()
@@ -228,6 +232,8 @@ class Quiz:
                                            command=self.submit_answer)
         self.submit_button.place(x=643, y=598, anchor="center")
 
+        root.bind('<Return>', self.submit_answer)
+
         if current_index == 0: # Disables the previous button if it is the first question
             self.prev_button.configure(state="disabled")
         if is_last: # Disables the last button if it is the last question
@@ -263,7 +269,7 @@ class Quiz:
             Quiz(self.parent)
 
     # Function to submit an answer, checking whether it is correct or incorrect, then makes user proceed to answer feedback page
-    def submit_answer(self):
+    def submit_answer(self, event=None):
         if self.var.get() == 0:
             return
         selections[qnum] = self.var.get()
