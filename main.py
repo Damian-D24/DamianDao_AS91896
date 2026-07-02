@@ -82,8 +82,9 @@ root.geometry("1280x720") # Specifies that the window size will be 1280 x 720
 #
 
 # Close Window
-def close_window():
-    root.destroy() # Closes the program
+def close_window(): # Asks the user if the user is sure they want to exit
+    if messagebox.askyesno("Exit?", "Are you sure you want to exit?"):
+        root.destroy()
 
 def randomiser():
     # Selects a random question that hasn't been asked yet
@@ -127,7 +128,7 @@ class QuizStart:
         # Allows user to press Enter to submit their name
         root.bind('<Return>', self.start_quiz)
     # Function to Start the Quiz
-    def start_quiz(self, event=0):
+    def start_quiz(self, event=None):
         name = self.entryname.get().strip()
         if name.isdigit(): # Checks if the name is only just numbers, then makes user retry
             messagebox.showerror("Error", "You cannot have just numbers in your name.")
@@ -217,14 +218,12 @@ class Quiz:
                                          width=100, height=46, corner_radius=8,
                                          command=self.go_previous)
         self.prev_button.place(x=448, y=598, anchor="center")
-
         # Next (Skip) Button
         self.next_button = ctk.CTkButton(self.frame, text="Skip",
                                          bg_color="white", fg_color="white", font=secondary_font, text_color="black",
                                          width=94, height=14, corner_radius=7,
                                          command=self.go_next)
         self.next_button.place(x=836, y=598, anchor="center")
-
         # Submit Button
         self.submit_button = ctk.CTkButton(self.frame, text="Submit",
                                            bg_color="white", fg_color="white", font=secondary_font, text_color="black",
@@ -232,7 +231,9 @@ class Quiz:
                                            command=self.submit_answer)
         self.submit_button.place(x=643, y=598, anchor="center")
 
-        root.bind('<Return>', self.submit_answer)
+        root.bind('<Return>', self.submit_answer) # If user presses enter button, the quiz will run the submit_answer function
+        root.bind('<Left>', self.go_previous) # If user presses left arrow button, the quiz will run the go_previous function
+        root.bind('<Right>', self.go_next) # If user presses right arrow button, the quiz will run the go_next function
 
         if current_index == 0: # Disables the previous button if it is the first question
             self.prev_button.configure(state="disabled")
@@ -251,7 +252,7 @@ class Quiz:
             self.next_button.configure(state="disabled") # Disables the next button if an answer is selected
 
     # Function to return to the previous question
-    def go_previous(self):
+    def go_previous(self, event=None):
         global current_index
         selections[qnum] = self.var.get()
         if current_index > 0:
@@ -260,7 +261,7 @@ class Quiz:
             Quiz(self.parent)
 
     # Function to skip to the next question
-    def go_next(self):
+    def go_next(self, event=None):
         global current_index
         selections[qnum] = self.var.get()
         if current_index < total_questions - 1:
@@ -301,12 +302,10 @@ class AnswerScreen:
         bg_image = ctk.CTkImage(light_image=bg, dark_image=bg, size=(1280, 720))
         self.bg_label = ctk.CTkLabel(self.frame, image=bg_image, text="")
         self.bg_label.place(x=0, y=0, relwidth=1, relheight=1)
-
         # Question counter
         self.questioncounter = ctk.CTkLabel(self.frame, text=f"{current_index + 1}/{total_questions}", font=questionnumber_font, fg_color="#62c370",
                                             text_color="white")
         self.questioncounter.place(x=120, y=120)
-
         # Exit button
         self.exit_button = ctk.CTkButton(self.frame, text="Exit",
                                          bg_color="#e46a4a", fg_color="white", font=main_exit_font, text_color="black",
@@ -319,7 +318,6 @@ class AnswerScreen:
         self.result_label = ctk.CTkLabel(self.frame, text=text, font=result_font,
                                          text_color=colour, fg_color="white")
         self.result_label.place(x=640, y=75, anchor="n")
-
         # Continue button
         self.continue_button = ctk.CTkButton(self.frame, text="Continue",
                                              bg_color="white", fg_color="white", font=secondary_font, text_color="black",
@@ -347,13 +345,11 @@ class ResultScreen:
         self.parent = parent
         self.frame = Frame(parent, width=1280, height=720)
         self.frame.pack(fill="both", expand=True)
-
         # Display the background
         bg = PIL.Image.open("images/ending.png") # Allows CustomTkinter to recognise the background I have uploaded to use the CtkImage function
         bg_image = ctk.CTkImage(light_image=bg, dark_image=bg, size=(1280, 720))
         self.bg_label = ctk.CTkLabel(self.frame, image=bg_image, text="")
         self.bg_label.place(x=0, y=0, relwidth=1, relheight=1)
-
         # Exit button (sits in the orange rounded box at the top-right of the background)
         self.exit_button = ctk.CTkButton(self.frame, text="Exit",
                                          bg_color="#ef6a4a", fg_color="white", font=main_exit_font, text_color="black",
@@ -373,13 +369,24 @@ class ResultScreen:
         else:
             message = "Excellent"
             colour = "#62c370" # Green
-
         # Final score text, centered in the white panel
         self.result_label = ctk.CTkLabel(self.frame,
                                          text=f"Your score is\n{final_score}/{total_questions}\n{message}, {names[0]}!",
                                          font=result_font, text_color=colour, fg_color="white",
                                          justify="center")
         self.result_label.place(x=640, y=360, anchor="center")
+        self.restart_button = ctk.CTkButton(self.frame, text="Restart",
+                                             bg_color="#ff924d", fg_color="white", font=secondary_font,
+                                             text_color="black",
+                                             width=94, height=16, corner_radius=8,
+                                             command=self.restart)
+        self.restart_button.place(x=643, y=598, anchor="center")
+
+    def restart(self):
+        root.destroy()
+        QuizStart(self.parent)
+
+
 
 root.title("New Zealand Native Bird Quiz")
 quiz_instance = QuizStart(root)
