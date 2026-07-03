@@ -325,8 +325,10 @@ class AnswerScreen:
                                              command=self.go_on)
         self.continue_button.place(x=643, y=598, anchor="center")
 
+        root.bind('<Return>', self.go_on)  # If user presses enter button, the quiz will run the go_on function
+
     # Goes to the next question, if this is the last question, gives user a final score
-    def go_on(self):
+    def go_on(self, event=None):
         global current_index, score
         if current_index >= total_questions - 1:
             score = sum(1 for q, ans in selections.items() if ans == questions_answers[q][6])
