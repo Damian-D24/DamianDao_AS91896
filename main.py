@@ -377,15 +377,24 @@ class ResultScreen:
                                          font=result_font, text_color=colour, fg_color="white",
                                          justify="center")
         self.result_label.place(x=640, y=360, anchor="center")
-        self.restart_button = ctk.CTkButton(self.frame, text="Restart",
-                                             bg_color="#ff924d", fg_color="white", font=secondary_font,
+        self.replay_button = ctk.CTkButton(self.frame, text="Replay",
+                                             bg_color="white", fg_color="white", font=secondary_font,
                                              text_color="black",
                                              width=94, height=16, corner_radius=8,
-                                             command=self.restart)
-        self.restart_button.place(x=643, y=598, anchor="center")
+                                             command=self.replay)
+        self.replay_button.place(x=643, y=598, anchor="center")
 
-    def restart(self):
-        root.destroy()
+    # Resets every variable that changes throughout the quiz, then returns to the start-up page
+    def replay(self):
+        global names, asked, question_order, selections, current_index, score, qnum
+        names = []
+        asked = []
+        question_order = []
+        selections = {}
+        current_index = 0
+        score = 0
+        qnum = 0
+        self.frame.destroy()
         QuizStart(self.parent)
 
 
