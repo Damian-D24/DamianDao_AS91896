@@ -132,14 +132,14 @@ class QuizStart:
         name = self.entryname.get().strip()
         if name.isdigit(): # Checks if the name is only just numbers, then makes user retry
             messagebox.showerror("Error", "You cannot have just numbers in your name.")
-        elif not name.isalpha():
-            messagebox.showerror("Error", "You cannot have numbers or special characters in your name.")
         elif name: # If there is a name, lets user proceed through quiz
             names.append(name)
             self.frame.destroy()
             Quiz(self.parent)
-        else: # If the name is blank, then makes user retry
+        elif not name: # If the name is blank, then makes user retry
             messagebox.showerror("Error", "Your name cannot be blank. Please enter your name.")
+        elif not name.isalpha():
+            messagebox.showerror("Error", "You cannot have numbers or special characters in your name.")
 
 #
 # SCREEN 2 - Main Quiz Page
