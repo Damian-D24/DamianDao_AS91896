@@ -70,7 +70,7 @@ entry_font=ctk.CTkFont(family=balsamiqsans, size=14) # Inputted text for the use
 answer_font=ctk.CTkFont(family=balsamiqsans, size=28, weight="bold") # Multiple choice radiobuttons for bird options
 main_exit_font=ctk.CTkFont(family=balsamiqsans, size=27) # Exit button in Quiz, Answer Feedback, and Result page
 secondary_font=ctk.CTkFont(family=balsamiqsans, size=20) # Previous, Submit, Next, and Continue Buttons
-questionnumber_font=ctk.CTkFont(family=balsamiqsans, size=32, weight="bold") # Question counter
+questioncounter_font=ctk.CTkFont(family=balsamiqsans, size=32, weight="bold") # Question counter
 
 result_font=ctk.CTkFont(family=balsamiqsans, size=60, weight="bold") # Correct!/Incorrect in Answer Feedback page, and text in the Result page.
 
@@ -164,7 +164,7 @@ class Quiz:
         self.bg_label = ctk.CTkLabel(self.frame, image=bg_image, text="")
         self.bg_label.place(x=0, y=0, relwidth=1, relheight=1)
         #Adding Question Count
-        self.questioncounter = ctk.CTkLabel(self.frame, font=questionnumber_font, fg_color="#62c370", text_color="white",
+        self.questioncounter = ctk.CTkLabel(self.frame, font=questioncounter_font, fg_color="#62c370", text_color="white",
                                             text=f"{current_index + 1}/{total_questions}") # Gives the user the position of the quiz they are at
         self.questioncounter.place(x=120, y=120)
         # Adding Exit Button
@@ -303,7 +303,7 @@ class AnswerScreen:
         self.bg_label = ctk.CTkLabel(self.frame, image=bg_image, text="")
         self.bg_label.place(x=0, y=0, relwidth=1, relheight=1)
         # Question counter
-        self.questioncounter = ctk.CTkLabel(self.frame, text=f"{current_index + 1}/{total_questions}", font=questionnumber_font, fg_color="#62c370",
+        self.questioncounter = ctk.CTkLabel(self.frame, text=f"{current_index + 1}/{total_questions}", font=questioncounter_font, fg_color="#62c370",
                                             text_color="white")
         self.questioncounter.place(x=120, y=120)
         # Exit button
@@ -396,8 +396,6 @@ class ResultScreen:
         qnum = 0
         self.frame.destroy()
         QuizStart(self.parent)
-
-
 
 root.title("New Zealand Native Bird Quiz")
 quiz_instance = QuizStart(root)
